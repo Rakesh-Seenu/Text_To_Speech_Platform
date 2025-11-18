@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Groq TTS Playground</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-area">
+                <div class="icon-box">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                </div>
+                <div>
+                    <h1>Groq TTS Playground</h1>
+                    <p class="subtitle">Lightning-fast text to speech</p>
+                </div>
+            </div>
+            <div class="powered-by">
+                <div>Powered by</div>
+                <div class="brand">playai-tts</div>
+            </div>
+        </header>
+
+        <div id="apiKeySection" class="api-box">
+            <h3 class="text-orange">🔑 Groq API Key Required</h3>
+            <p style="margin-bottom: 15px; color: #ccc;">Enter your Groq API key to get started.</p>
+            <div class="flex-row">
+                <input type="password" id="apiKeyInput" placeholder="Enter your Groq API key (gsk_...)" class="flex-1"/>
+                <button id="saveApiKeyBtn" class="btn btn-primary btn-small">Save Key</button>
+            </div>
+        </div>
+
+        <div id="apiKeySuccess" class="hidden api-success">
+            <span>✅ API key saved successfully!</span>
+            <button id="changeApiKeyBtn" style="background:none; border:none; color:#6ee7b7; text-decoration:underline; cursor:pointer; margin-left:auto;">Change Key</button>
+        </div>
+
+        <div class="grid">
+            <div class="main-panel">
+                <div class="card">
+                    <h2>Text to Speech</h2>
+                    <textarea id="textInput" placeholder="Enter text to convert to speech..." maxlength="10000"></textarea>
+                    <div style="text-align: right; font-size: 0.8rem; color: #6b7280; margin: 5px 0 15px;">
+                        <span id="charCount">0 / 10,000 characters</span>
+                    </div>
+                    <button id="generateBtn" disabled class="btn btn-primary">Generate Speech</button>
+                    <div id="errorMessage" class="hidden" style="background:#7f1d1d; color:#fca5a5; padding:10px; margin-top:10px; border-radius:5px;"></div>
+                </div>
+
+                <div id="resultSection" class="card hidden">
+                    <h3>Speech Result</h3>
+                    <audio id="audioPlayer" controls style="width: 100%; margin-bottom: 15px;"></audio>
+                    <div class="flex-row">
+                        <button id="playBtn" class="btn btn-primary btn-small">Play</button>
+                        <a id="downloadBtn" class="btn btn-secondary btn-small">Save WAV</a>
+                    </div>
+                    <div style="margin-top: 15px; font-size: 0.9rem; color: #9ca3af; display: flex; gap: 20px;">
+                        <span>Time: <b id="genTime" style="color: white">-</b></span>
+                        <span>Size: <b id="fileSize" style="color: white">-</b></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="side-panel">
+                <div class="card">
+                    <h3>Parameters</h3>
+                    <label>Model</label>
+                    <select id="modelSelect">
+                        <option value="playai-tts">playai-tts (English)</option>
+                        <option value="playai-tts-arabic">playai-tts-arabic (Arabic)</option>
+                    </select>
+
+                    <label>Voice</label>
+                    <select id="voiceSelect"></select>
+                </div>
+
+                <div class="info-box">
+                    <strong class="text-orange">About Groq TTS</strong>
+                    <p style="margin-top: 5px; line-height: 1.5;">
+                        Generates lifelike audio using playai-tts models. 
+                        <br><br>• Max input: 10,000 chars<br>• Output: WAV
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
