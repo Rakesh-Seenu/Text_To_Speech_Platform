@@ -1,5 +1,5 @@
 const API_BASE_URL = 'http://localhost:5000';
-const API_KEY_STORAGE = 'groq_api_key';
+const API_KEY_STORAGE = 'groq_api_key'; // NOTE: KEEP this name for localStorage compatibility
 
 const voices = {
     english: ['Arista-PlayAI', 'Atlas-PlayAI', 'Basil-PlayAI', 'Briggs-PlayAI', 'Calum-PlayAI', 
@@ -22,6 +22,8 @@ const genTime = document.getElementById('genTime');
 const fileSize = document.getElementById('fileSize');
 const downloadBtn = document.getElementById('downloadBtn');
 const playBtn = document.getElementById('playBtn');
+
+// API Key Elements
 const apiKeySection = document.getElementById('apiKeySection');
 const apiKeyInput = document.getElementById('apiKeyInput');
 const saveApiKeyBtn = document.getElementById('saveApiKeyBtn');
@@ -41,8 +43,9 @@ window.addEventListener('load', () => {
 // Event Listeners
 saveApiKeyBtn.addEventListener('click', () => {
     const apiKey = apiKeyInput.value.trim();
-    if (!apiKey) return showError('Please enter an API key');
-    if (!apiKey.startsWith('gsk_')) return showError('Invalid API key format.');
+    if (!apiKey) return showError('Please enter a processing key.');
+    // Keep internal check for gsk_ but provide a non-branded message
+    if (!apiKey.startsWith('gsk_')) return showError('Invalid key format. Processing keys usually start with "gsk_"'); 
     localStorage.setItem(API_KEY_STORAGE, apiKey);
     showApiKeySuccess();
 });
@@ -67,8 +70,8 @@ generateBtn.addEventListener('click', async () => {
     const text = textInput.value.trim();
     const apiKey = localStorage.getItem(API_KEY_STORAGE);
     
-    if (!apiKey) return showError('Please enter your API key first');
-    if (!text) return showError('Please enter some text');
+    if (!apiKey) return showError('Please enter your processing key first.');
+    if (!text) return showError('Please enter some text.');
 
     setLoading(true);
 
@@ -86,7 +89,8 @@ generateBtn.addEventListener('click', async () => {
 
         if (!response.ok) {
             const error = await response.json();
-            throw new Error(error.error || 'Failed to generate speech');
+            // Rebranded error message
+            throw new Error(error.error || 'TextSprache Engine failed to process speech.');
         }
 
         const generationTime = response.headers.get('X-Generation-Time');
@@ -101,7 +105,7 @@ generateBtn.addEventListener('click', async () => {
         
         resultSection.classList.remove('hidden');
     } catch (error) {
-        showError(error.message);
+        showError(error.message || 'Processing failed. Check your key and try again.');
     } finally {
         setLoading(false);
     }
@@ -133,8 +137,27 @@ function setLoading(isLoading) {
     if (isLoading) {
         errorMessage.classList.add('hidden');
         resultSection.classList.add('hidden');
-        generateBtn.textContent = "Generating...";
+        // Add spinner to the button
+        generateBtn.innerHTML = `
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="animation: spin 1s linear infinite; width: 20px; height: 20px;">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            Generating...
+        `;
+        // Inject spin animation CSS if not present
+        if (!document.getElementById('spin-style')) {
+            const style = document.createElement('style');
+            style.id = 'spin-style';
+            style.textContent = '@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }';
+            document.head.appendChild(style);
+        }
     } else {
-        generateBtn.textContent = "Generate Speech";
+        // Reset button state
+        generateBtn.innerHTML = `
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 20px; height: 20px;">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072"/>
+            </svg>
+            Generate Speech
+        `;
     }
 }

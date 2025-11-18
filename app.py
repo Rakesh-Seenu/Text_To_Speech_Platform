@@ -63,6 +63,11 @@ def generate_speech():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/health', methods=['GET'])
+def health_check():
+    # Rebranded health check
+    return jsonify({'status': 'healthy', 'service': 'TextSprache Engine'})
+
 if __name__ == '__main__':
     print("🚀 Server running at http://localhost:5000")
     app.run(debug=True, host='0.0.0.0', port=5000)
