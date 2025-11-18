@@ -2,30 +2,38 @@
 
 ![alt text](image.png)
 
-**TextSprache Studio** (German for "Text Speech") is a lightning-fast, modern web interface for Text-to-Speech (TTS) generation. This application utilizes a Python Flask backend to proxy requests to the high-speed Groq TTS service, providing users with a beautiful, responsive frontend to quickly generate and download high-quality audio.
+![Python](https://img.shields.io/badge/Python-3.8+-blue?style=for-the-badge&logo=python)
+![Flask](https://img.shields.io/badge/Flask-3.0-green?style=for-the-badge&logo=flask)
+![Frontend](https://img.shields.io/badge/Frontend-HTML%2FCSS%2FJS-orange?style=for-the-badge&logo=html5)
 
-The modern, light-themed frontend is built with pure HTML, CSS, and JavaScript for maximum simplicity and speed.
+**TextSprache Studio** (German for "Text Speech") is a lightning-fast, modern web interface for Text-to-Speech (TTS) generation. This application utilizes a Python **Flask backend** (`app.py`) to proxy requests to the high-speed Groq TTS service, providing users with a beautiful, responsive, and secure frontend to quickly generate and download high-quality audio.
+
+The modern, light-themed frontend is built with pure HTML, CSS, and JavaScript.
+
+---
 
 ## ✨ Features
 
 * **Lightning-Fast Generation:** Leveraging the speed of Groq's API for sub-second audio generation.
-* **Secure API Key Handling:** The user's processing key is stored locally in the browser's Local Storage and never permanently saved on the server.
-* **Modern UI/UX:** An elegant, clean, and responsive light theme inspired by top-tier modern web applications.
-* **Multi-Language Support:** Supports both English and Arabic TTS models with multiple voices for each.
+* **Secure API Key Handling:** The user's processing key is stored **only locally in the browser's Local Storage** and is never saved on the server.
+* **Modern UI/UX:** An elegant, clean, and responsive light theme.
+* **Multi-Language Support:** Supports both English (`playai-tts`) and Arabic (`playai-tts-arabic`) models.
 * **Performance Metrics:** Displays generation time and final audio file size upon completion.
-* **Output Format:** Generates high-quality WAV audio files ready for playback and download.
+* **Output Format:** Generates high-quality **WAV audio files** ready for playback and download.
+
+---
 
 ## 🏗️ Architecture and Data Flow
 
-The application follows a standard client-server architecture where the Flask backend acts as a secure intermediary between the client's browser and the Groq TTS API.
+The application follows a standard client-server architecture where the Flask backend (`app.py`) acts as a secure intermediary between the client's browser and the Groq TTS API.
 
 ### Technical Stack
 
 | Component | Technology | Role |
 | :--- | :--- | :--- |
 | **Frontend** | HTML5, CSS3, JavaScript | User interface, key management (Local Storage), and AJAX requests. |
-| **Backend** | Python, Flask | Serves static files, handles the `POST` request, initializes the Groq client, and proxies the TTS request. |
-| **TTS Engine** | Groq Python SDK | Executes the Text-to-Speech generation request. |
+| **Backend** | Python, **Flask** | Serves static files, initializes the Groq client, and proxies the TTS request. |
+| **TTS Engine** | **Groq Python SDK** | Executes the Text-to-Speech generation request using the user's key. |
 
 ### Generation Flow (Mermaid Diagram)
 
@@ -34,7 +42,7 @@ This diagram illustrates the secure, key-proxied process of generating audio.
 ```mermaid
 graph TD
     subgraph Client (Browser)
-        A[1. User Enters Text & Clicks Generate] --> B(2. script.js: Reads Key from LocalStorage);
+        A[1. User Enters Text & Key] --> B(2. script.js: Reads Key from LocalStorage);
         B --> C{3. POST /api/generate-speech};
     end
     
@@ -63,51 +71,42 @@ graph TD
 ![Flask](https://img.shields.io/badge/Flask-3.0-green?style=for-the-badge&logo=flask)
 
 
-## 📋 Prerequisites
+## ⚙️ Installation and Setup
 
-- Python 3.8+
-- Groq API key (get one at https://console.groq.com/ - FREE tier available!)
-- Modern web browser
+File Setup: Ensure all four core files (app.py, index.html, script.js, style.css) are in the same directory.
+1. Install dependencies: The project requires flask, flask-cors, and groq.
 
-## ⚙️ Installation
+```Bash
 
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/groq-tts-playground.git
-cd groq-tts-playground
+pip install flask flask-cors groq
 ```
 
-2. Install dependencies:
-```bash
-pip install -r requirements.txt
+Start the Backend Server:
+
+```Bash
+python app.py
 ```
+The console will confirm the server is running:
 
-3. No .env file needed! Users enter their API keys in the frontend.
+🚀 Server running at http://localhost:5000
 
-## 🎯 Usage
+2. Usage
 
-4. Start the Backend Server
+- Access the App: Open your web browser and navigate to http://localhost:5000.
+- Enter Key: In the Processing Key Required box, paste your Groq API Key and click Save Key. The key is stored in your browser for persistence.
+- Generate: Input your text, select your model and voice, and click Generate Speech.
+- Download: Use the built-in audio player or the Save WAV button to download the resulting audio file.
 
-```bash
-python backend.py
-```
-
-You should see:
-```
-🚀 Starting Groq TTS Server...
-📝 Server running on: http://localhost:5000
-💡 Users will provide their own API keys through the frontend
-```
-
-## 🎨 Available Voices
+## Available Voices
+The available voices are fetched directly from the backend on load and support the two Groq TTS models:
 
 ### English (playai-tts)
-- **Female**: Arista, Celeste, Cheyenne, Deedee, Gail, Indigo, Mamaw
-- **Male**: Atlas, Basil, Briggs, Calum, Chip, Cillian, Fritz, Mason, Mikail, Mitch, Quinn, Thunder
+Female: Arista, Celeste, Cheyenne, Deedee, Gail, Indigo, Mamaw
+Male: Atlas, Basil, Briggs, Calum, Chip, Cillian, Fritz, Mason, Mikail, Mitch, Quinn, Thunder
 
 ### Arabic (playai-tts-arabic)
-- **Male**: Ahmad, Khalid, Nasser
-- **Female**: Amira
+Male: Ahmad, Khalid, Nasser
+Female: Amira
 
 ## 🔒 Security Features
 
