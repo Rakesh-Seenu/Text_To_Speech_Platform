@@ -90,7 +90,31 @@ The console will confirm the server is running:
 
 🚀 Server running at http://localhost:5000
 
-2. Usage
+2. Docker Pull and Run Instructions
+This section clearly explains how to download and launch your application.\
+
+### 🐳 Run with Docker
+
+The easiest way to run this application is by using the official image published on Docker Hub.
+
+**1. Pull the Image**
+Pull the latest production-ready image from the **hsrakesh70/textsprache-studio** repository:
+```bash
+docker pull hsrakesh70/textsprache-studio:production
+```
+
+**2. Run the Container**
+Start the container and map the internal port 5000 to your host machine's port 5000:
+```Bash
+docker run -d -p 5000:5000 hsrakesh70/textsprache-studio:production
+```
+
+**3. Access the Application**
+
+Once the container is running, open your web browser and navigate to:
+http://localhost:5000
+
+3. Usage
 
 - Access the App: Open your web browser and navigate to http://localhost:5000.
 - Enter Key: In the Processing Key Required box, paste your Groq API Key and click Save Key. The key is stored in your browser for persistence.
